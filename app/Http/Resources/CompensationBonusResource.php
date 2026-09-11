@@ -1,0 +1,25 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Resources;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class CompensationBonusResource extends JsonResource
+{
+    /** @return array<string, mixed> */
+    public function toArray(Request $request): array
+    {
+        return [
+            'id' => $this->id,
+            'compensation_plan_id' => $this->compensation_plan_id,
+            'name' => $this->name,
+            'description' => $this->description,
+            'example' => $this->example,
+            'advantage' => $this->advantage,
+            'sort_order' => $this->sort_order,
+        ];
+    }
+}
