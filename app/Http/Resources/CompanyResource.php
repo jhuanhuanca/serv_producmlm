@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Support\CatalogTools;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,6 +21,8 @@ class CompanyResource extends JsonResource
             'color_palette' => $this->color_palette,
             'website' => $this->website,
             'is_active' => $this->is_active,
+            'enabled_tools' => $this->resource->resolvedEnabledTools(),
+            'available_tools' => CatalogTools::KEYS,
             'products_count' => $this->whenCounted('products'),
             'products' => ProductResource::collection($this->whenLoaded('products')),
             'documents' => DocumentResource::collection($this->whenLoaded('documents')),

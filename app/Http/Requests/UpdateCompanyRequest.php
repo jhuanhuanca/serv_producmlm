@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Support\CatalogTools;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateCompanyRequest extends FormRequest
 {
@@ -25,6 +27,8 @@ class UpdateCompanyRequest extends FormRequest
             'color_palette.accent' => ['nullable', 'string', 'max:20'],
             'website' => ['nullable', 'url', 'max:255'],
             'is_active' => ['sometimes', 'boolean'],
+            'enabled_tools' => ['nullable', 'array'],
+            'enabled_tools.*' => ['string', Rule::in(CatalogTools::KEYS)],
         ];
     }
 }
