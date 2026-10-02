@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\CompensationPlanController;
 use App\Http\Controllers\Api\DocumentController;
 use App\Http\Controllers\Api\FiveDayFundamentalController;
 use App\Http\Controllers\Api\ImcPackageController;
+use App\Http\Controllers\Api\InventoryImageController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\RegistrationOptionsController;
 use App\Http\Controllers\Api\SupportTicketController;
@@ -18,7 +19,14 @@ use App\Http\Controllers\Api\TechnicalSheetController;
 use App\Http\Controllers\Api\WellnessNeedController;
 use Illuminate\Support\Facades\Route;
 
+Route::middleware(['throttle:catalog'])->prefix('v1')->group(function (): void {
+    Route::get('/inventory-images/{uuid}', [InventoryImageController::class, 'show'])
+        ->where('uuid', '[0-9a-fA-F-]{36}');
+});
+
 Route::middleware(['service.token', 'throttle:catalog'])->prefix('v1')->group(function (): void {
+    Route::post('/inventory-images', [InventoryImageController::class, 'store']);
+
     Route::get('/registration-options', RegistrationOptionsController::class);
 
     Route::get('/companies', [CompanyController::class, 'index']);
