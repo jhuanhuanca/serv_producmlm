@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -19,9 +20,14 @@ return new class extends Migration
             $table->string('original_name');
             $table->string('mime', 80);
             $table->unsignedInteger('size')->default(0);
-            $table->longBlob('content');
+            $table->binary('content');
             $table->timestamps();
         });
+
+        $driver = Schema::getConnection()->getDriverName();
+        if (in_array($driver, ['mysql', 'mariadb'], true)) {
+            DB::statement('ALTER TABLE inventory_images MODIFY content LONGBLOB NOT NULL');
+        }
     }
 
     public function down(): void
